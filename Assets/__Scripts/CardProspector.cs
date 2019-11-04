@@ -12,9 +12,9 @@ public enum eCardState{
 public class CardProspector : Card
 {
     [Header("Set Dynamically: CardProspector")]
-    //this is how you use the enum eCardSite
+    //this is how you use the enum eCardState
 
-    public eCardSite state=eCardSite.drawpile;
+    public eCardState state=eCardState.drawpile;
     public List<CardProspector> hiddenBy= new List<CardProspector>();
     public int layoutID;
     public SlotDef slotDef;

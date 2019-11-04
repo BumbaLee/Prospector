@@ -43,7 +43,7 @@ public class Layout : MonoBehaviour
         PT_XMLHashList slotsX= xml["slot"];
 
         for(int i= 0; i<slotsX.Count;i++){
-            tSd= new SlotDef();
+            tSD= new SlotDef();
             if(slotsX[i].HasAtt("type")){
                 tSD.type=slotsX[i].att("type");
             }else{
@@ -54,7 +54,7 @@ public class Layout : MonoBehaviour
             tSD.y= float.Parse(slotsX[i].att("y"));
             tSD.layerID= int.Parse(slotsX[i].att("layer"));
             //this converts the number of the layerID into a text layerName
-            tSD.LayerName=sortingLayerNames[tSD.layerID];
+            tSD.layerName=sortingLayerNames[tSD.layerID];
             switch(tSD.type){
                 //pull additional attributes based on the type of this slots
                 case "slot":
@@ -63,7 +63,7 @@ public class Layout : MonoBehaviour
                     if(slotsX[i].HasAtt("hiddenby")){
                         string[] hiding=slotsX[i].att("hiddenby").Split(',');
                         foreach(string s in hiding){
-                            tSD.hiddenBy.Add(int.Pase(s));
+                            tSD.hiddenBy.Add(int.Parse(s));
                         }
                     }
                     slotDefs.Add(tSD);
