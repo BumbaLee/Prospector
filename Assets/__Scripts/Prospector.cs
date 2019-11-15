@@ -88,6 +88,53 @@ public class Prospector : MonoBehaviour {
 				
 			
 		}
+	}//Layout()
+
+	//Moves the current target to the discardPile
+	void MoveToDiscard(CardProspector cd){
+		//set the state of the card to discard
+		cd.state=eCardState.discard;
+		discardPile.Add(cd); //Add it to the discardPile List<>
+		cd.transform.parent= layoutAnchor; //update its transform parent
+
+		//position this card on the discardPile
+		cd.transform.localPosition= new Vector3(layout.multiplier.x*layout.discardPile.x,layout.multiplier.y*layout.discardPile.y,-layout.discardPile.layerID+0.5f);
+		cd.faceUp=true;
+		//place it on top of the pile for depth sorting
+		cd.SetSortingLayerName(layout.discardPile.layerName);
+		cd.SetSortOrder(-100+discardPile.Count);
+	}
+
+	//make cd the new target card
+	void MoveToTarget(CardProspector cd){
+		//If there is currently a target card, move it to discardPile
+		if(target !=null) MoveToDiscard(target);
+		target=cd; //cd is the new target;
+		cd.state=eCardState.target;
+		cd.transform.parent=layoutAnchor;
+		//move to the target position
+		cd.transform.localPosition= new Vector3(layout.multiplier.x*layout.discardPile.x,layout.multiplier.y*layout.discardPile.y,-layout.discardPile.layerID);
+		cd.faceUp=true; //make it face-up
+		//set the depth sorting
+		cd.SetSortingLayerName(layout.discardPile.layerName);
+		cd.SetSortOrder(0);
+	}
+	void UpdateDrawPile(){
+		CardProspector cd;
+		//go through all the cards of the drawPile
+		for(int i=0;i<drawPile.Count;i++){
+			cd= drawPile[i];
+			cd.transform.parent=layoutAnchor;
+
+			//position it correctly with the layout.drawPile.stagger
+			Vector2 dpStagger = layout.drawPile.stagger;
+			cd.transform.localPosition= new Vector3(layout.multiplier.x*(layout.drawPile.x+i*dpStagger.x),layout.multiplier.y*(layout.drawPile.y+i*dpStagger.y),-layout.drawPile.layerID+0.1f*i);
+			cd.faceUp=false;
+			cd.state=eCardState.drawpile;
+			//set depth sorting
+			cd.SetSortingLayerName(layout.drawPile.layerName);
+			cd.SetSortOrder(-10*i);
+		}
 	}
 
 }
