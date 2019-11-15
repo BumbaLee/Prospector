@@ -84,10 +84,12 @@ public class Prospector : MonoBehaviour {
 			cp.state= eCardState.tableau;
 			//cardprospectors in the tableau have the state CardState.tableau
 			cp.SetSortingLayerName(tSD.layerName);//set the sorting layers
-			tableau.Add(cp);
-				
-			
+			tableau.Add(cp);	
 		}
+		//set up the initial target card 
+		MoveToTarget(Draw());
+		//set up the draw pile
+		UpdateDrawPile();
 	}//Layout()
 
 	//Moves the current target to the discardPile
@@ -134,6 +136,24 @@ public class Prospector : MonoBehaviour {
 			//set depth sorting
 			cd.SetSortingLayerName(layout.drawPile.layerName);
 			cd.SetSortOrder(-10*i);
+		}
+	}
+	//CardClicked is called any time a card in the game is clicked
+	public void CardClicked(CardProspector cd){
+		//the reaction is determined by the state of the clicked card
+		switch (cd.state){
+			case eCardState.target:
+				//clicking the target card does nothing
+				break;
+			case eCardState.drawPile:
+				//clicking any card in the drawPile will draw the next card
+				MoveToDiscard(target); //moves the target to the discard pile
+				MoveToTarget(Draw()); //moves the next drawn card to the target
+				UpdateDrawPile(); //restacks the drawPile
+				break;
+			case eCardState.tableau:
+				//clicking a card in the tableau will check if its a valid play
+				break;
 		}
 	}
 
