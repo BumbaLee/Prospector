@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System.Collections;
-using System.Collections.Generic;
+
 
 
 public class Prospector : MonoBehaviour {
@@ -31,14 +32,18 @@ public class Prospector : MonoBehaviour {
 	}
 
 	void Start() {
-		deck = GetComponent<Deck> ();
+		deck = GetComponent<Deck>();
 		deck.InitDeck (deckXML.text);
 		Deck.Shuffle(ref deck.cards);
 
+		//Card c;
+		//for(int cNum=0;cNum<deck.cards.Count;cNum++){
+			//c=deck.cards(cNum);
+			//c.transform.localPosition=new Vector3((cNum%13)*3,cNum/13*4,0);
+		//}
 		layout=GetComponent<Layout>();
 		layout.ReadLayout(layoutXML.text);
-		drawPile= ConvertListCardsToListCardProspectors(deck.cards);
-		LayoutGame();
+
 	}
 	List<CardProspector>ConvertListCardsToListCardProspectors(List<Card> lCD){
 		List<CardProspector> lCP= new List<CardProspector>();

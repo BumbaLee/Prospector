@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class Card : MonoBehaviour {
 
+	[Header("Set Dynamically")]
 	public string    suit;
 	public int       rank;
 	public Color     color = Color.black;
@@ -50,6 +51,5 @@ public class Decorator{
 public class CardDefinition{
 	public string	face;	//sprite to use for face cart
 	public int		rank;	// value from 1-13 (Ace-King)
-	public List<Decorator>	
-					pips = new List<Decorator>();  // Pips Used
+	public List<Decorator> pips = new List<Decorator>();  // Pips Used
 }
