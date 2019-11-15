@@ -145,7 +145,7 @@ public class Prospector : MonoBehaviour {
 			case eCardState.target:
 				//clicking the target card does nothing
 				break;
-			case eCardState.drawPile:
+			case eCardState.drawpile:
 				//clicking any card in the drawPile will draw the next card
 				MoveToDiscard(target); //moves the target to the discard pile
 				MoveToTarget(Draw()); //moves the next drawn card to the target
