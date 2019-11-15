@@ -43,6 +43,8 @@ public class Prospector : MonoBehaviour {
 		//}
 		layout=GetComponent<Layout>();
 		layout.ReadLayout(layoutXML.text);
+		drawPile=ConvertListCardsToListCardProspectors(deck.cards);
+		LayoutGame();
 
 	}
 	List<CardProspector>ConvertListCardsToListCardProspectors(List<Card> lCD){
