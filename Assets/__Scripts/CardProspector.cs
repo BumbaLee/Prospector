@@ -18,4 +18,12 @@ public class CardProspector : Card
     public List<CardProspector> hiddenBy= new List<CardProspector>();
     public int layoutID;
     public SlotDef slotDef;
+
+    //this allows the card to react to being clicked
+    override public void OnMouseUpAsButton(){
+        //call the cardclicked method on the Prospector singleton 
+        Prospector.S.CardClicked(this);
+        //also call the base class card.cs version of this method
+        base.OnMouseUpAsButton();
+    }
 }
