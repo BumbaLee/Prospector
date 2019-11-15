@@ -86,11 +86,45 @@ public class Prospector : MonoBehaviour {
 			cp.SetSortingLayerName(tSD.layerName);//set the sorting layers
 			tableau.Add(cp);	
 		}
+		//set which cards are hiding others
+		foreach(CardProspector tCP in tableau){
+			foreach(int hid in tCP.slotDef.hiddenBy){
+				cp=FindCardByLayoutID(hid);
+				tCP.hiddenBy.Add(cp);
+			}
+		}
 		//set up the initial target card 
 		MoveToTarget(Draw());
 		//set up the draw pile
 		UpdateDrawPile();
 	}//Layout()
+
+	//Convert from the layoutID int to the CardProspector with that ID
+	CardProspector FindCardByLayoutID(int layoutID){
+		foreach(CardProspector tCP in tableau){
+			//search through all cards in the tabluea List<>
+			if(tCP.layoutID==layoutID){
+				//if the card has the same ID, return it
+				return(tCP);
+			}
+		}
+		//if its not found, retturn null
+		return(null);
+	}
+
+	//this turns cards in the Mine face-up or face-down
+	void SetTableauFaces(){
+		foreach(CardProspector cd in tableau){
+			bool faceUp=true; //assume the card will be face up
+			foreach(CardProspector cover in cd.hiddenBy){
+				//if either of the covering cards in the tablueau
+				if(cover.state==eCardState.tableau){
+					faceUp=false;
+				}
+			}
+			cd.faceUp=faceUp; // set the value on the card
+		}
+	}
 
 	//Moves the current target to the discardPile
 	void MoveToDiscard(CardProspector cd){
@@ -167,6 +201,7 @@ public class Prospector : MonoBehaviour {
 				//if we got here, then: YAY! its a valid card.
 				tableau.Remove(cd); //remove it from the tableau List
 				MoveToTarget(cd); //make it the target card
+				SetTableauFaces();
 				break;
 		}
 	}
