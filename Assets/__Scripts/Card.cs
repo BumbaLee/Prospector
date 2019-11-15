@@ -16,6 +16,51 @@ public class Card : MonoBehaviour {
 	public GameObject back;  // back of card;
 	public CardDefinition def;  // from DeckXML.xml		
 
+	public SpriteRenderer[] spriteRenderers;
+
+	void Start(){
+		SetSortOrder(0); //ensure that the card starts properly depth sorted
+	}
+
+	//if spriteRenderers is not yet defined, this function defines it
+	public void PopulateSpriteRenderers(){
+		if(spriteRenderers==null||spriteRenderers.Length==0){
+			spriteRenderers=GetComponentsInChildren<SpriteRenderer>();
+		}
+	}
+
+	//sets the sortingLayerName on all SpriteRenderer Components
+	public void SetSortingLayerName(string tSLN){
+		PopulateSpriteRenderers();
+		foreach(SpriteRenderer tSR in spriteRenderers){
+			tSR.sortingLayerName=tSLN;
+		}
+	}
+
+	//sets the sortingOrder of all SpriteRenderer Components
+	public void SetSortOrder(int sOrd){
+		PopulateSpriteRenderers();
+		//iterate through all the  spriteRenderes as tSR
+		foreach(SpriteRenderer tSR in spriteRenderers){
+			if(tSR.gameObject==this.gameObject){
+				tSR.sortingOrder=sOrd;
+				continue;
+			}
+			switch(tSR.gameObject.name){
+				case "back": //if the name is "back"
+					//set it to the highest layer to cover the other sprites
+					tSR.sortingOrder=sOrd+2;
+					break;
+				case "face": //if the name is "face"
+				default: //of if it's anything else
+					//Set it to the middle layer to be above the background
+					tSR.sortingOrder=sOrd+1;
+					break;
+			}
+			
+		}
+	}
+
 
 	public bool faceUp {
 		get {
@@ -28,10 +73,7 @@ public class Card : MonoBehaviour {
 	}
 
 
-	// Use this for initialization
-	void Start () {
 	
-	}
 	
 	// Update is called once per frame
 	void Update () {
